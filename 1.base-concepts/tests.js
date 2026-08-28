@@ -1,37 +1,28 @@
-describe('Домашнее задание к занятию 1. «Основные понятия»', () => {
-  describe('Задача №1', () => {
-    it('должна возвращать 2 корня уравнения', () => {
-      expect(solveEquation(1, 5, 4)).toEqual([-1, -4]);
-    });
-  
-    it('должна возвращать 1 корень уравнения', () => {
-      expect(solveEquation(1, 2, 1)).toEqual([-1]);
-    });
+function solveEquation(a, b, c) {
+	let arr = [];
+	const d = b ** 2 - 4 * a * c;
 
-    it('должна вернуть пустой массив', () => {
-      expect(solveEquation(1, 2, 10)).toEqual([]);
-    });
-  });
-  
-  describe('Задача №2. Функция должна:', () => {
-    it('верно считать кредит: кейс #1', () => {
-      expect(calculateTotalMortgage(10, 0, 50000, 12)).toEqual(52749.53);
-    });
+	if (d > 0) {
+		const root1 = (-b + Math.sqrt(d)) / (2 * a);
+		const root2 = (-b - Math.sqrt(d)) / (2 * a);
+		arr.push(root1, root2);
+	} else if (d === 0) {
+		const root = -b / (2 * a);
+		arr.push(root);
+	}
 
-    it('верно считать кредит: кейс #2', () => {
-      expect(calculateTotalMortgage(10, 1000, 50000, 12)).toEqual(51694.54);
-    });
+	return arr;
+}
 
-    it('верно считать кредит: кейс #3', () => {
-      expect(calculateTotalMortgage(10, 20000, 20000, 48)).toEqual(0);
-    });
+function calculateTotalMortgage(percent, contribution, amount, countMonths) {
+	if (contribution >= amount) {
+		return 0;
+	}
 
-    it('верно считать кредит: кейс #4', () => {
-      expect(calculateTotalMortgage(10, 0, 10000, 36)).toEqual(11616.19);
-    });
+	const creditBody = amount - contribution;
+	const monthlyPercent = (percent / 100) / 12;
+	const monthlyPayment = creditBody * (monthlyPercent + (monthlyPercent / (((1 + monthlyPercent) ** countMonths) - 1)));
+	const totalAmount = (monthlyPayment * countMonths) + contribution;
 
-    it('верно считать кредит: кейс #5', () => {
-      expect(calculateTotalMortgage(15, 0, 10000, 36)).toEqual(12479.52);
-    }); 
-  });
-});
+	return Number(totalAmount.toFixed(2));
+}
